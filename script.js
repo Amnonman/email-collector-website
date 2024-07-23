@@ -1,13 +1,46 @@
-document.getElementById('email-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('email-form');
     const messageElement = document.getElementById('message');
-    
-    // Here you would typically send the email to your server
-    // For this example, we'll just display a success message
-    messageElement.textContent = `Thank you! ${email} has been subscribed.`;
-    messageElement.style.color = 'green';
-    
-    // Clear the input field
-    document.getElementById('email').value = '';
+    const emailCountElement = document.getElementById('email-count');
+
+    // Function to update email count
+    function updateEmailCount() {
+        fetch('/api/count')
+            .then(response => response.json())
+            .then(data => {
+                emailCountElement.textContent = data.count;
+            })
+            .catch(error => {
+                console.error('Error fetching email count:', error);
+            });
+    }
+
+    // Initial email count update
+    updateEmailCount();
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+
+        fetch('/api/subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                messageElement.textContent = 'Thank you for subscribing!';
+                updateEmailCount();
+                form.reset();
+            } else {
+                messageElement.textContent = data.message;
+            }
+        })
+        .catch(error => {
+            messageElement.textContent = 'An error occurred. Please try again.';
+        });
+    });
 });
