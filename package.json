@@ -1,0 +1,12 @@
+{
+  "name": "email-collector-website",
+  "version": "1.0.0",
+  "description": "A website that collects emails and stores them in a JSON file",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
