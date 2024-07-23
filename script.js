@@ -5,14 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to update email count
     function updateEmailCount() {
-        fetch('/api/count')
-            .then(response => response.json())
-            .then(data => {
-                emailCountElement.textContent = data.count;
-            })
-            .catch(error => {
-                console.error('Error fetching email count:', error);
-            });
+        const emails = JSON.parse(localStorage.getItem('emails') || '[]');
+        emailCountElement.textContent = emails.length;
     }
 
     // Initial email count update
@@ -22,25 +16,20 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const email = document.getElementById('email').value;
 
-        fetch('/api/subscribe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: email })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                messageElement.textContent = 'Thank you for subscribing!';
-                updateEmailCount();
-                form.reset();
-            } else {
-                messageElement.textContent = data.message;
-            }
-        })
-        .catch(error => {
-            messageElement.textContent = 'An error occurred. Please try again.';
-        });
+        // Get existing emails from localStorage
+        let emails = JSON.parse(localStorage.getItem('emails') || '[]');
+
+        // Check if email already exists
+        if (emails.includes(email)) {
+            messageElement.textContent = 'This email is already subscribed.';
+        } else {
+            // Add new email
+            emails.push(email);
+            localStorage.setItem('emails', JSON.stringify(emails));
+
+            messageElement.textContent = 'Thank you for subscribing!';
+            updateEmailCount();
+            form.reset();
+        }
     });
 });
