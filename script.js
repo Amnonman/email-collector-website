@@ -73,9 +73,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', 'email_list.csv');
+        const fileName = 'email_list.csv';
+        link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        // Add message about the exported file
+        messageElement.textContent = `CSV file "${fileName}" has been exported. It should be in your default downloads folder.`;
     });
 });
