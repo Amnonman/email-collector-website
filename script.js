@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleListButton = document.getElementById('toggle-list');
     const emailListContainer = document.getElementById('email-list');
     const emailsList = document.getElementById('emails');
+    const exportCsvButton = document.getElementById('export-csv');
 
     // Function to update email count
     function updateEmailCount() {
@@ -58,5 +59,23 @@ document.addEventListener('DOMContentLoaded', function() {
             emailListContainer.style.display = 'none';
             toggleListButton.textContent = 'Show Email List';
         }
+    });
+
+    // Export emails as CSV
+    exportCsvButton.addEventListener('click', function() {
+        const emails = JSON.parse(localStorage.getItem('emails') || '[]');
+        if (emails.length === 0) {
+            alert('No emails to export.');
+            return;
+        }
+
+        const csvContent = 'data:text/csv;charset=utf-8,' + emails.join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'email_list.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 });
