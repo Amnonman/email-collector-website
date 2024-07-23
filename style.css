@@ -3,7 +3,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
 }
@@ -14,6 +14,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    max-width: 400px;
+    width: 100%;
 }
 
 h1 {
@@ -55,4 +57,36 @@ button:hover {
 #email-count {
     font-weight: bold;
     color: #007bff;
+}
+
+#toggle-list {
+    margin-top: 1rem;
+    width: 100%;
+    border-radius: 4px;
+}
+
+#email-list {
+    margin-top: 1rem;
+    text-align: left;
+    display: none;
+}
+
+#email-list h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+#emails {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#emails li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+#emails li:last-child {
+    border-bottom: none;
 }
